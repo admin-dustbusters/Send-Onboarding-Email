@@ -3,419 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to DustBusters Cleaners!</title>
+    <title>DustBusters - Onboarding Link Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-        }
-        .progress-bar-fill {
-            transition: width 0.5s ease-in-out;
-        }
-        #signature-pad {
-            border: 2px dashed #cbd5e1;
-            border-radius: 0.5rem;
-            cursor: crosshair;
-        }
-        .form-container {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .feedback-message {
+            transition: opacity 0.3s ease-in-out;
         }
     </style>
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+<body class="bg-slate-100 flex items-center justify-center min-h-screen">
 
-    <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden form-container">
-        <div class="p-8">
-            <!-- Progress Bar -->
-            <div class="mb-8">
-                <div class="flex justify-between mb-2">
-                    <span id="progress-text" class="text-sm font-medium text-slate-600">Step 1 of 5</span>
-                    <span id="progress-percent" class="text-sm font-medium text-cyan-600">20%</span>
-                </div>
-                <div class="w-full bg-slate-200 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-cyan-500 h-2.5 rounded-full" style="width: 20%;"></div>
-                </div>
+    <div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-cyan-600">Onboarding Email Sender</h1>
+            <p class="text-slate-500 mt-2">Enter the new cleaner's details to prepare their onboarding email.</p>
+        </header>
+
+        <form id="onboarding-form" class="space-y-6">
+            <div>
+                <label for="firstName" class="block text-sm font-medium text-slate-700">First Name (for welcome message)</label>
+                <input type="text" id="firstName" name="firstName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., Michal" required>
             </div>
 
-            <!-- Onboarding Steps -->
-            <div id="onboarding-steps">
-                <!-- Step 1: Welcome -->
-                <div class="step active" data-step="1">
-                    <div class="text-center">
-                        <h1 class="text-4xl font-bold text-cyan-600 mb-4">Welcome to DustBusters!</h1>
-                        <p class="text-xl text-slate-600 mb-2">We're so happy to have you on the team, <span id="cleaner-name" class="font-bold">Cleaner</span>.</p>
-                        <p class="text-slate-500 max-w-2xl mx-auto">This quick onboarding process will get you all set up and ready for your first jobs. Let's get started!</p>
-                    </div>
-                </div>
-
-                <!-- Step 2: Contract -->
-                <div class="step" data-step="2">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 1: Sign Your Agreement</h2>
-                    <p class="text-slate-500 mb-6">Please review the Independent Contractor Agreement below. You can draw your signature in the box at the bottom.</p>
-                    <div id="contract-container" class="h-96 overflow-y-auto border border-slate-200 rounded-lg p-6 bg-slate-50 text-sm text-slate-700 space-y-4">
-                        <h3 class="text-lg font-bold text-center">INDEPENDENT CONTRACTOR AGREEMENT FOR CLEANING SERVICES</h3>
-                        <p><strong>PARTIES:</strong></p>
-                        <ul class="list-disc list-inside">
-                            <li>Company: Dustbusters Cleaning LLC</li>
-                            <li>Contractor: <span id="contractor-name" class="font-bold"></span></li>
-                        </ul>
-                        <div>
-                            <h4 class="font-bold">1. INDEPENDENT CONTRACTOR RELATIONSHIP</h4>
-                            <p>1.1 Contractor agrees to provide cleaning services as an independent contractor, not as an employee. Contractor is responsible for their own taxes and benefits.</p>
-                            <p>1.2 Contractor has the right to control the manner and means of performing services, subject to quality standards and client requirements.</p>
-                        </div>
-                        <div>
-                           <h4 class="font-bold">2. SCOPE OF SERVICES</h4>
-                           <p>2.1 Contractor will provide residential/commercial cleaning services at locations assigned by Company.</p>
-                           <p>2.2 Services must meet Company's quality standards and client specifications.</p>
-                           <p>2.3 Contractor must use Company-approved cleaning supplies and equipment when provided, or use equivalent quality products when self-supplied.</p>
-                       </div>
-                       <div>
-                           <h4 class="font-bold">3. COMPENSATION AND PAYMENT</h4>
-                           <p>3.1 Contractor will be paid only upon successful completion of assigned cleaning jobs.</p>
-                           <p>3.2 Payment rates: <input type="text" id="pay-rate" class="font-bold bg-slate-200 p-1 rounded" readonly></p>
-                           <p>3.3 Payment terms: Every Friday.</p>
-                           <p>3.4 No payment for cancelled jobs, no-shows by contractor, or incomplete work.</p>
-                       </div>
-                        <div>
-                            <h4 class="font-bold">4. LIABILITY AND COMPANY SUPPORT</h4>
-                            <p>4.1 COMPANY INSURANCE: Company maintains general liability insurance to protect our business operations and provide coverage for normal cleaning activities.</p>
-                            <p>4.2 CONTRACTOR RESPONSIBILITY: Contractor is responsible for damages and losses caused by: Carelessness or failure to follow proper cleaning procedures, Intentional misconduct or negligence, Theft or misappropriation of client property, Unauthorized use of client property.</p>
-                            <p>4.3 SMALL ACCIDENTS: For minor, unintentional accidents during normal cleaning: Contractor must immediately report to Company. Company will work with contractor and client to resolve the situation. Company may assist in addressing minor damages depending on circumstances.</p>
-                            <p>4.4 INSURANCE OPTION: Contractor may choose to obtain personal liability insurance for additional protection, especially when working in high-value properties. Company can recommend coverage options.</p>
-                            <p>4.5 IMMEDIATE REPORTING: Contractor must immediately report any damage, theft, or incidents to Company.</p>
-                        </div>
-                         <div>
-                            <h4 class="font-bold">5. CLIENT PROTECTION AND NON-SOLICITATION</h4>
-                            <p>5.1 ACTIVE CLIENT PROTECTION: While working with Company, contractor agrees not to: Directly or indirectly solicit Company clients for independent cleaning services, Accept cleaning work from Company clients outside of Company arrangements, Provide personal contact information or business cards to Company clients for cleaning services, Encourage clients to hire contractor directly or independently.</p>
-                            <p>5.2 DURATION: This non-solicitation applies during the entire term of this agreement.</p>
-                            <p>5.3 POST-TERMINATION: After termination of this agreement: Contractor may contact former Company clients after [60-90] days. Professional courtesy and reasonable waiting period expected. Company appreciates advance notice if contractor plans to work with former clients.</p>
-                            <p>5.4 GEOGRAPHIC SCOPE: Applies to all clients within the North Carolina Triad area.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">6. CONFIDENTIALITY</h4>
-                            <p>6.1 Contractor will not disclose: Client information, preferences, or contact details, Company pricing, business methods, or operational procedures, Security codes, keys, or access information, Any confidential business information.</p>
-                            <p>6.2 All client information remains Company property.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">7. PROFESSIONAL STANDARDS</h4>
-                            <p>7.1 PROFESSIONAL CONDUCT: Contractor must: Arrive punctually for scheduled appointments, Dress professionally and maintain clean appearance, Respect client property and privacy, Follow all safety protocols, Maintain professional communication with clients.</p>
-                            <p>7.2 PROHIBITED ACTIONS: Contractor may not: Use client property for personal purposes, Bring unauthorized persons to job sites, Accept large gratuities without Company knowledge, Engage in unprofessional or inappropriate behavior.</p>
-                        </div>
-                        <div>
-                           <h4 class="font-bold">8. TERMINATION</h4>
-                           <p>8.1 VOLUNTARY TERMINATION: Either party may terminate with [14] days written notice for any reason.</p>
-                           <p>8.2 IMMEDIATE TERMINATION: Company may terminate immediately for: Theft or intentional damage to property, Serious unprofessional conduct or client complaints, Violation of client non-solicitation during active period, Criminal activity on job sites, Repeated failure to meet quality standards after warnings.</p>
-                           <p>8.3 COMPANY SUPPORT: Company will work with contractors to address performance issues when possible before termination and provide fair notice except in cases of serious misconduct.</p>
-                           <p>8.4 RETURN OF MATERIALS: Upon termination, contractor must return all Company property, keys, and access devices.</p>
-                       </div>
-                       <div>
-                           <h4 class="font-bold">9. EQUIPMENT AND QUALITY ASSURANCE</h4>
-                           <p>9.1 EQUIPMENT RESPONSIBILITY: Contractor liable for lost, damaged, or stolen Company equipment due to carelessness. Must return all items in reasonable condition upon termination. Normal wear and tear expected and accepted.</p>
-                           <p>9.2 QUALITY STANDARDS: Company reserves right to inspect work and request corrections. Repeated quality issues may result in additional training or termination. Client feedback will be shared constructively with contractors.</p>
-                           <p>9.3 COMMUNICATION PROTOCOL: Major client requests or complaints should be directed to Company management. Contractor should maintain professional relationships with clients. Company will support contractors in client interactions.</p>
-                       </div>
-                       <div>
-                           <h4 class="font-bold">10. LEGAL PROVISIONS</h4>
-                           <p>10.1 GOVERNING LAW: This agreement is governed by North Carolina law.</p>
-                           <p>10.2 VENUE: Any disputes will be resolved in courts of [your county], North Carolina.</p>
-                           <p>10.3 SEVERABILITY: If any provision is unenforceable, the remainder stays in effect.</p>
-                           <p>10.4 ATTORNEY FEES: Prevailing party in any dispute is entitled to attorney fees and costs.</p>
-                           <p>10.5 ENTIRE AGREEMENT: This agreement supersedes all prior agreements and can only be modified in writing.</p>
-                       </div>
-                       <div>
-                           <h4 class="font-bold">PARTNERSHIP APPROACH</h4>
-                           <p>Our Commitment to Contractors: Company provides liability coverage for normal cleaning operations. We support our contractors and work together to resolve issues. Fair treatment and professional respect in all interactions. Clear expectations that protect both parties.</p>
-                           <p>Contractor Partnership: Professional service delivery that protects Company reputation. Open communication about challenges or concerns. Respect for client relationships during active working period. Reasonable transition period for client contact after agreement ends.</p>
-                       </div>
-                        <p>By signing below, you acknowledge that you have read, understood, and agree to the terms of this Independent Contractor Agreement.</p>
-                    </div>
-                    <div class="mt-6">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Draw Your Signature Below:</label>
-                        <canvas id="signature-pad" width="400" height="200"></canvas>
-                        <button id="clear-signature" class="mt-2 text-sm text-cyan-600 hover:underline">Clear Signature</button>
-                    </div>
-                     <p id="signature-error" class="text-red-500 text-sm mt-2 hidden">Please provide a signature to continue.</p>
-                </div>
-
-                <!-- Step 3: Availability -->
-                <div class="step" data-step="3">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 2: Share Your Availability</h2>
-                    <p class="text-slate-500 mb-6">Please fill out the form below to let us know the days and times you’re available to work. Once you hit "Submit" on the form, you'll be able to continue.</p>
-                    <div class="w-full h-[700px] border border-slate-200 rounded-lg overflow-hidden">
-                       <iframe src="https://admin-dustbusters.github.io/availability-form/cleaner-availability-form.html" class="w-full h-full" frameborder="0"></iframe>
-                    </div>
-                     <p id="availability-error" class="text-red-500 text-sm mt-2 hidden">Please submit your availability to continue.</p>
-                </div>
-
-                <!-- Step 4: Invoicing -->
-                <div class="step" data-step="4">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 3: How Invoicing Works</h2>
-                    <p class="text-slate-500 mb-6">Submitting your weekly invoice is simple and automated. This short video explains how the system works.</p>
-                    <div class="aspect-w-16 aspect-h-9 border border-slate-200 rounded-lg overflow-hidden">
-                         <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe>
-                    </div>
-                </div>
-                
-                <!-- Step 5: Housecall Pro & QuickBooks -->
-                <div class="step" data-step="5">
-                     <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 4 & 5: Watch Your Inbox!</h2>
-                     <div class="space-y-6 text-slate-600">
-                        <div>
-                            <h3 class="font-semibold text-lg text-slate-700">Housecall Pro Setup</h3>
-                            <p>You will receive an email from <strong>Housecall Pro</strong> shortly. This is the simple app you'll use to manage your jobs, get details, and take before/after pictures. Please follow the instructions in the email to download the app and log in.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg text-slate-700">QuickBooks Direct Deposit</h3>
-                            <p>To ensure you get paid on time, you'll also receive an email from <strong>QuickBooks</strong>. Please follow the instructions to add your bank details for direct deposit.</p>
-                        </div>
-                        <p class="font-medium text-cyan-600">That's it for now! You can move to the final step.</p>
-                     </div>
-                </div>
-
-                <!-- Step 6: All Done -->
-                <div class="step" data-step="6">
-                    <div class="text-center">
-                        <svg class="mx-auto h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <h1 class="text-4xl font-bold text-green-600 mt-4">You're All Set!</h1>
-                        <p class="text-xl text-slate-600 mt-2">Welcome to the DustBusters team!</p>
-                        <p class="text-slate-500 mt-4 max-w-xl mx-auto">Keep an eye on your email for the invites from Housecall Pro and QuickBooks. If you have any questions, don't hesitate to reach out. We're excited to start working with you.</p>
-                    </div>
-                </div>
-
+            <div>
+                <label for="lastName" class="block text-sm font-medium text-slate-700">Last Legal Name (for contract)</label>
+                <input type="text" id="lastName" name="lastName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., Polonyi" required>
             </div>
-        </div>
+            
+            <div>
+                <label for="hourlyRate" class="block text-sm font-medium text-slate-700">Hourly Rate</label>
+                <input type="text" id="hourlyRate" name="hourlyRate" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., 20 or $20/h" required>
+            </div>
 
-        <!-- Navigation -->
-        <div class="px-8 py-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
-            <button id="prev-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition-colors invisible">
-                Back
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-700">Cleaner's Email Address</label>
+                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., michal.p@example.com" required>
+            </div>
+            
+            <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-105">
+                Send Onboarding Email
             </button>
-            <div id="validation-message" class="text-red-500 font-medium text-sm"></div>
-            <button id="next-btn" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-6 rounded-lg transition-colors transform hover:scale-105">
-                Let's Go!
-            </button>
+        </form>
+
+        <div id="feedback" class="mt-6 text-center font-medium hidden feedback-message">
+            <p></p>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const steps = document.querySelectorAll('.step');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const progressPercent = document.getElementById('progress-percent');
+        const form = document.getElementById('onboarding-form');
+        const feedbackDiv = document.getElementById('feedback');
+        const feedbackP = feedbackDiv.querySelector('p');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        const onboardingBaseUrl = 'https://admin-dustbusters.github.io/Send-Onboarding-Email/index.html';
+        const n8nWebhookUrl = 'https://dustbusters-n8n.duckdns.org/webhook/send-email';
+
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+            feedbackDiv.classList.add('hidden');
             
-            let currentStep = 1;
-            const totalSteps = 5; // User-facing steps
-            let cleanerData = {};
-            let availabilitySubmitted = false;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            let hourlyRateInput = document.getElementById('hourlyRate').value.trim();
+            const email = document.getElementById('email').value;
             
-            // Signature Pad Logic
-            const canvas = document.getElementById('signature-pad');
-            const ctx = canvas.getContext('2d');
-            let drawing = false;
-            let hasSigned = false;
+            // --- NEW: Smart Formatting Logic ---
+            // 1. Combine first and last name for the contract
+            const fullName = `${firstName} ${lastName}`;
 
-            // --- FINAL WEHOOK URL ---
-            const webhookUrl = 'https://dustbusters-n8n.duckdns.org/webhook/onboarding-email';
-
-            function initializeFromURL() {
-                const params = new URLSearchParams(window.location.search);
-                cleanerData.name = params.get('name') || 'Cleaner';
-                cleanerData.fullName = params.get('fullName') || 'New Contractor';
-                cleanerData.rate = params.get('rate') || 'N/A';
-
-                document.getElementById('cleaner-name').textContent = cleanerData.name;
-                document.getElementById('contractor-name').textContent = cleanerData.fullName;
-                document.getElementById('pay-rate').value = cleanerData.rate;
+            // 2. Format the hourly rate if it's just a number
+            if (!isNaN(hourlyRateInput) && hourlyRateInput !== '') {
+                hourlyRateInput = `$${hourlyRateInput}/h`;
             }
+            // --- END of NEW LOGIC ---
 
-            function updateUI() {
-                steps.forEach(step => step.classList.remove('active'));
-                const activeStepElem = document.querySelector(`.step[data-step="${currentStep}"]`);
-                if(activeStepElem) activeStepElem.classList.add('active');
-
-                // Progress bar logic
-                const userFacingStep = Math.min(currentStep, totalSteps);
-                const progress = (userFacingStep / totalSteps) * 100;
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = `Step ${userFacingStep} of ${totalSteps}`;
-                progressPercent.textContent = `${Math.round(progress)}%`;
-
-                // Button visibility and text
-                prevBtn.classList.toggle('invisible', currentStep === 1);
-                
-                if (currentStep === 1) {
-                    nextBtn.textContent = "Let's Go!";
-                } else if (currentStep === 2) {
-                    nextBtn.textContent = "Agree & Continue";
-                } else if (currentStep >= totalSteps + 1) {
-                    nextBtn.classList.add('invisible');
-                } else {
-                    nextBtn.textContent = "Next";
-                }
-            }
-            
-            function validateStep() {
-                // Step 2: Contract signature validation
-                if (currentStep === 2) {
-                    const signatureError = document.getElementById('signature-error');
-                    if (!hasSigned) {
-                        signatureError.classList.remove('hidden');
-                        return false;
-                    }
-                    signatureError.classList.add('hidden');
-                }
-                
-                // Step 3: Availability form validation
-                if (currentStep === 3) {
-                    const availabilityError = document.getElementById('availability-error');
-                    if (!availabilitySubmitted) {
-                        availabilityError.classList.remove('hidden');
-                        return false;
-                    }
-                    availabilityError.classList.add('hidden');
-                }
-                return true;
-            }
-
-            async function handleSubmitContract() {
-                if (currentStep === 2 && hasSigned) {
-                    nextBtn.disabled = true;
-                    nextBtn.textContent = 'Submitting...';
-                    
-                    const signatureImage = canvas.toDataURL('image/png');
-                    const contractHtml = document.getElementById('contract-container').innerHTML;
-
-                    const payload = {
-                        ...cleanerData,
-                        signatureImage,
-                        contractHtml
-                    };
-
-                    try {
-                        const response = await fetch(webhookUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (!response.ok) {
-                           throw new Error(`Webhook failed with status: ${response.status}`);
-                        }
-                        console.log('Contract submitted successfully!');
-                        return true;
-                    } catch (error) {
-                        console.error('Failed to submit contract:', error);
-                        alert('There was an error submitting your contract. Please try again.');
-                        return false;
-                    } finally {
-                        nextBtn.disabled = false;
-                        nextBtn.textContent = 'Next';
-                    }
-                }
-                return true; // Pass if not on this step
-            }
-
-            nextBtn.addEventListener('click', async () => {
-                if (!validateStep()) return;
-
-                if (currentStep === 2) {
-                    const submissionSuccess = await handleSubmitContract();
-                    if (!submissionSuccess) return;
-                }
-
-                if (currentStep < steps.length) {
-                    currentStep++;
-                    updateUI();
-                }
+            const params = new URLSearchParams({
+                name: firstName,
+                fullName: fullName, // Now correctly combined
+                rate: hourlyRateInput // Now correctly formatted
             });
+            const onboardingLink = `${onboardingBaseUrl}?${params.toString()}`;
 
-            prevBtn.addEventListener('click', () => {
-                if (currentStep > 1) {
-                    currentStep--;
-                    updateUI();
+            const payload = {
+                to: email,
+                firstName: firstName,
+                onboardingLink: onboardingLink
+            };
+            
+            try {
+                const response = await fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Webhook failed with status: ${response.status}`);
                 }
-            });
-            
-             // Listen for message from iframe
-            window.addEventListener('message', (event) => {
-                // IMPORTANT: Add origin check for security in a real application
-                // if (event.origin !== 'https://admin-dustbusters.github.io') return;
 
-                if (event.data === 'availabilitySubmitted') {
-                    console.log('Received availability submission confirmation.');
-                    availabilitySubmitted = true;
-                    document.getElementById('availability-error').classList.add('hidden');
-                }
-            });
+                feedbackP.textContent = `Onboarding email sent successfully to ${email}!`;
+                feedbackP.className = 'text-green-600';
+                feedbackDiv.classList.remove('hidden');
 
-            // --- Signature Pad ---
-            function getMousePos(canvasDom, mouseEvent) {
-                const rect = canvasDom.getBoundingClientRect();
-                return {
-                    x: mouseEvent.clientX - rect.left,
-                    y: mouseEvent.clientY - rect.top
-                };
+            } catch (error) {
+                console.error('Error sending email via webhook:', error);
+                feedbackP.textContent = 'Failed to send email. Please check the n8n URL and try again.';
+                feedbackP.className = 'text-red-600';
+                feedbackDiv.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Onboarding Email';
+                submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
             }
-            
-            function getTouchPos(canvasDom, touchEvent) {
-              const rect = canvasDom.getBoundingClientRect();
-              return {
-                x: touchEvent.touches[0].clientX - rect.left,
-                y: touchEvent.touches[0].clientY - rect.top
-              };
-            }
-
-            function startDrawing(e) {
-                e.preventDefault();
-                drawing = true;
-                hasSigned = true;
-                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            }
-
-            function draw(e) {
-                e.preventDefault();
-                if (!drawing) return;
-                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-            }
-
-            function stopDrawing() {
-                drawing = false;
-                ctx.beginPath();
-            }
-
-            canvas.addEventListener('mousedown', startDrawing);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mouseout', stopDrawing);
-            
-            canvas.addEventListener('touchstart', startDrawing);
-            canvas.addEventListener('touchmove', draw);
-            canvas.addEventListener('touchend', stopDrawing);
-
-            document.getElementById('clear-signature').addEventListener('click', () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                hasSigned = false;
-            });
-
-            // Initial setup
-            initializeFromURL();
-            updateUI();
         });
     </script>
 </body>
