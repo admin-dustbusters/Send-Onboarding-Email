@@ -17,39 +17,39 @@
 </head>
 <body class="bg-slate-100 flex items-center justify-center min-h-screen">
 
-    <div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-8">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-cyan-600">Onboarding Email Sender</h1>
-            <p class="text-slate-500 mt-2">Enter the new cleaner's details to prepare their onboarding email.</p>
+    <div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <header class="text-center p-8 bg-[#1A202C]">
+            <h1 class="text-3xl font-bold text-slate-200">DustBusters Onboarding</h1>
+            <p class="text-slate-400 mt-2">Enter cleaner details to send their onboarding link.</p>
         </header>
 
-        <form id="onboarding-form" class="space-y-6">
+        <form id="onboarding-form" class="space-y-6 p-8">
             <div>
                 <label for="firstName" class="block text-sm font-medium text-slate-700">First Name (for welcome message)</label>
-                <input type="text" id="firstName" name="firstName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., Michal" required>
+                <input type="text" id="firstName" name="firstName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., Michal" required>
             </div>
 
             <div>
                 <label for="lastName" class="block text-sm font-medium text-slate-700">Last Legal Name (for contract)</label>
-                <input type="text" id="lastName" name="lastName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., Polonyi" required>
+                <input type="text" id="lastName" name="lastName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., Polonyi" required>
             </div>
             
             <div>
                 <label for="hourlyRate" class="block text-sm font-medium text-slate-700">Hourly Rate</label>
-                <input type="text" id="hourlyRate" name="hourlyRate" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., 20 or $20/h" required>
+                <input type="text" id="hourlyRate" name="hourlyRate" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., 20 or $20/h" required>
             </div>
 
             <div>
                 <label for="email" class="block text-sm font-medium text-slate-700">Cleaner's Email Address</label>
-                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm" placeholder="e.g., michal.p@example.com" required>
+                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., michal.p@example.com" required>
             </div>
             
-            <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-105">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-105">
                 Send Onboarding Email
             </button>
         </form>
 
-        <div id="feedback" class="mt-6 text-center font-medium hidden feedback-message">
+        <div id="feedback" class="mt-0 p-8 pt-0 text-center font-medium hidden feedback-message">
             <p></p>
         </div>
     </div>
@@ -62,7 +62,6 @@
 
         const onboardingBaseUrl = 'https://admin-dustbusters.github.io/Send-Onboarding-Email/index.html';
         const n8nWebhookUrl = 'https://dustbusters-n8n.duckdns.org/webhook/send-email';
-
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -77,20 +76,18 @@
             let hourlyRateInput = document.getElementById('hourlyRate').value.trim();
             const email = document.getElementById('email').value;
             
-            // --- NEW: Smart Formatting Logic ---
-            // 1. Combine first and last name for the contract
+            // Smart Formatting Logic
             const fullName = `${firstName} ${lastName}`;
-
-            // 2. Format the hourly rate if it's just a number
             if (!isNaN(hourlyRateInput) && hourlyRateInput !== '') {
                 hourlyRateInput = `$${hourlyRateInput}/h`;
             }
-            // --- END of NEW LOGIC ---
 
+            // Construct the final link with all necessary data
             const params = new URLSearchParams({
                 name: firstName,
-                fullName: fullName, // Now correctly combined
-                rate: hourlyRateInput // Now correctly formatted
+                fullName: fullName,
+                rate: hourlyRateInput,
+                email: email // Include email for the second workflow
             });
             const onboardingLink = `${onboardingBaseUrl}?${params.toString()}`;
 
@@ -107,17 +104,16 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Webhook failed with status: ${response.status}`);
-                }
+                if (!response.ok) { throw new Error(`Webhook failed: ${response.status}`); }
 
                 feedbackP.textContent = `Onboarding email sent successfully to ${email}!`;
                 feedbackP.className = 'text-green-600';
                 feedbackDiv.classList.remove('hidden');
+                form.reset();
 
             } catch (error) {
                 console.error('Error sending email via webhook:', error);
-                feedbackP.textContent = 'Failed to send email. Please check the n8n URL and try again.';
+                feedbackP.textContent = 'Failed to send email. Please check console and try again.';
                 feedbackP.className = 'text-red-600';
                 feedbackDiv.classList.remove('hidden');
             } finally {
