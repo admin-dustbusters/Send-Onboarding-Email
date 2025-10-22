@@ -235,6 +235,7 @@
                 cleanerData.name = params.get('name') || 'Cleaner';
                 cleanerData.fullName = params.get('fullName') || 'New Contractor';
                 cleanerData.rate = params.get('rate') || 'N/A';
+                cleanerData.email = params.get('email');
 
                 document.getElementById('cleaner-name').textContent = cleanerData.name;
                 document.getElementById('contractor-name').textContent = cleanerData.fullName;
