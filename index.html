@@ -180,7 +180,7 @@
                 <!-- Step 3: Availability (Old Step 4) -->
                 <div class="step" data-step="3">
                     <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 2: Share Your Availability</h2>
-                    <p class="text-slate-500 mb-6">Please fill out the form below to let us know the days and times you’re available to work. Once you hit "Submit" on the form, you'll be able to continue.</p>
+                    <p class="text-slate-500 mb-6">Please fill out the form below to let us know the days and times you're available to work. Once you hit "Submit" on the form, you'll be able to continue.</p>
                     <div class="w-full h-[700px] border border-slate-200 rounded-lg overflow-hidden">
                        <iframe src="https://admin-dustbusters.github.io/availability-form/cleaner-availability-form.html" class="w-full h-full" frameborder="0"></iframe>
                     </div>
@@ -197,13 +197,13 @@
                     </div>
                 </div>
                 
-                <!-- Step 5: Housecall Pro & QuickBooks (Old Step 6) -->
+                <!-- Step 5: Zenbooker & QuickBooks (UPDATED FROM HOUSECALL PRO) -->
                 <div class="step" data-step="5">
                      <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 4 & 5: Watch Your Inbox!</h2>
                      <div class="space-y-6 text-slate-600">
                          <div>
-                             <h3 class="font-semibold text-lg text-slate-700">Housecall Pro Setup</h3>
-                             <p>You will receive an email from <strong>Housecall Pro</strong> shortly. This is the simple app you'll use to manage your jobs, get details, and take before/after pictures. Please follow the instructions in the email to download the app and log in.</p>
+                             <h3 class="font-semibold text-lg text-slate-700">Zenbooker Setup</h3>
+                             <p>You will receive an email from <strong>Zenbooker</strong> shortly. This is the simple app you'll use to manage your jobs, view client details, and track your schedule. Please follow the instructions in the email to download the app and log in.</p>
                          </div>
                          <div>
                              <h3 class="font-semibold text-lg text-slate-700">QuickBooks Direct Deposit</h3>
@@ -224,7 +224,7 @@
                         </div>
                         <h1 class="text-4xl font-bold text-blue-600 mt-4">You're All Set!</h1>
                         <p class="text-xl text-slate-600 mt-2">Welcome to the DustBusters team!</p>
-                        <p class="text-slate-500 mt-4 max-w-xl mx-auto">Keep an eye on your email for the invites from Housecall Pro and QuickBooks. If you have any questions, don't hesitate to reach out. We're excited to start working with you.</p>
+                        <p class="text-slate-500 mt-4 max-w-xl mx-auto">Keep an eye on your email for the invites from Zenbooker and QuickBooks. If you have any questions, don't hesitate to reach out. We're excited to start working with you.</p>
                     </div>
                 </div>
 
@@ -357,9 +357,11 @@
                 return true;
             }
 
+            let contractSubmitted = false; // NEW: Track if contract has been submitted
+
             async function handleSubmitContract() {
-                // Runs on Step 2 (was 3)
-                if (currentStep === 2 && hasSigned) {
+                // Only submit once, when moving from Step 2 to Step 3
+                if (currentStep === 2 && hasSigned && !contractSubmitted) {
                     nextBtn.disabled = true;
                     nextBtn.textContent = 'Submitting...';
                     
@@ -389,6 +391,7 @@
                         // }
 
                         console.log('Contract submission sent (no-cors mode).');
+                        contractSubmitted = true; // NEW: Mark as submitted
                         return true;
                     } catch (error) {
                         console.error('Failed to submit contract:', error);
@@ -401,7 +404,7 @@
                         nextBtn.textContent = 'Next'; // Will be set correctly by updateUI on next step
                     }
                 }
-                return true; // Pass if not on this step
+                return true; // Pass if not on this step or already submitted
             }
 
             nextBtn.addEventListener('click', async () => {
@@ -548,9 +551,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
