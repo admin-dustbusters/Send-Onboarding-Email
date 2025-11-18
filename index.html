@@ -4,120 +4,483 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to DustBusters Cleaners!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Load Loom Player SDK -->
     <script src="https://player.loom.com/player-sdk.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .progress-section {
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+        }
+        
+        .progress-percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
         .step {
             display: none;
         }
+        
         .step.active {
             display: block;
+            animation: fadeIn 0.5s ease;
         }
-        .progress-bar-fill {
-            transition: width 0.5s ease-in-out;
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        #signature-pad {
-            border: 2px dashed #cbd5e1;
-            border-radius: 0.5rem;
-            cursor: crosshair;
+        
+        .welcome-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .form-container {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
         }
-        /* NEW: Gradient Background */
-        .gradient-bg {
-            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+        
+        .welcome-subtitle {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 10px;
         }
-        /* Aspect ratio for video containers */
-        .aspect-w-16 { position: relative; padding-bottom: 56.25%; }
-        .aspect-h-9 { height: 0; }
-        .aspect-w-16 > iframe {
+        
+        .welcome-name {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .welcome-description {
+            color: #64748b;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .step-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+        
+        .step-description {
+            color: #64748b;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        
+        .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
         }
+        
+        .manual-skip-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .manual-skip-btn:hover {
+            background: #f0f4ff;
+        }
+        
+        .contract-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            background: #f8fafc;
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .contract-container h3 {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        .contract-container h4 {
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+        
+        .contract-container p {
+            margin-bottom: 10px;
+        }
+        
+        .contract-container ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .signature-section {
+            margin-top: 20px;
+        }
+        
+        .signature-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+        
+        #signature-pad {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            cursor: crosshair;
+            display: block;
+            max-width: 100%;
+        }
+        
+        .clear-signature-btn {
+            margin-top: 10px;
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .clear-signature-btn:hover {
+            color: #764ba2;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 700px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .info-section {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .info-block {
+            margin-bottom: 25px;
+        }
+        
+        .info-block:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .info-text {
+            color: #475569;
+            line-height: 1.6;
+        }
+        
+        .completion-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .checkmark-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        
+        .checkmark {
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        .completion-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .completion-subtitle {
+            font-size: 20px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+        
+        .completion-text {
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
+        
+        .navigation {
+            padding: 25px 40px;
+            background: #f8fafc;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .back-btn {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .back-btn:hover {
+            background: #cbd5e1;
+        }
+        
+        .back-btn.invisible {
+            visibility: hidden;
+        }
+        
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 32px;
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .next-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .next-btn.invisible {
+            visibility: hidden;
+        }
+        
+        .validation-message {
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+            
+            .welcome-title, .completion-title {
+                font-size: 28px;
+            }
+            
+            .step-title {
+                font-size: 24px;
+            }
+            
+            .navigation {
+                padding: 20px 25px;
+            }
+        }
     </style>
 </head>
-<body class="gradient-bg flex items-center justify-center min-h-screen p-4">
-
-    <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden form-container">
-        <div class="p-8">
+<body>
+    <div class="container">
+        <div class="content">
             <!-- Progress Bar -->
-            <div class="mb-8">
-                <div class="flex justify-between mb-2">
-                    <span id="progress-text" class="text-sm font-medium text-slate-600">Step 1 of 5</span>
-                    <span id="progress-percent" class="text-sm font-medium text-blue-600">20%</span>
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span id="progress-text" class="progress-label">Step 1 of 5</span>
+                    <span id="progress-percent" class="progress-percent">20%</span>
                 </div>
-                <div class="w-full bg-slate-200 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-blue-500 h-2.5 rounded-full" style="width: 20%;"></div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar-fill" style="width: 20%;"></div>
                 </div>
             </div>
 
-            <!-- Onboarding Steps -->
+            <!-- Steps -->
             <div id="onboarding-steps">
                 
                 <!-- Step 1: Welcome + Intro Video -->
                 <div class="step active" data-step="1">
-                    <!-- WELCOME MESSAGE MOVED HERE -->
-                    <div class="text-center mb-6">
-                        <h1 class="text-4xl font-bold text-blue-600 mb-4">Welcome to DustBusters!</h1>
-                        <p class="text-xl text-slate-600 mb-2">We're so happy to have you on the team, <span id="cleaner-name" class="font-bold">Cleaner</span>.</p>
-                        <p class="text-slate-500 max-w-2xl mx-auto">This quick onboarding process will get you all set up and ready for your first jobs. Please watch this short video to get started!</p>
+                    <div class="welcome-header">
+                        <h1 class="welcome-title">🧹 Welcome to DustBusters!</h1>
+                        <p class="welcome-subtitle">We're so happy to have you on the team, <span id="cleaner-name" class="welcome-name">Cleaner</span>.</p>
+                        <p class="welcome-description">This quick onboarding process will get you all set up and ready for your first jobs. Please watch this short video to get started!</p>
                     </div>
 
-                     <div class="aspect-w-16 aspect-h-9 border border-slate-200 rounded-lg overflow-hidden">
-                         <!-- Note: The embed URL is used here -->
-                        <iframe id="intro-video" src="https://www.loom.com/embed/a1b9f5bf0a974f7abd3fb1062478ad50" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+                    <div class="video-container">
+                        <iframe id="intro-video" src="https://www.loom.com/embed/a1b9f5bf0a974f7abd3fb1062478ad50" allowfullscreen></iframe>
                     </div>
-                    <p id="intro-video-error" class="text-red-500 text-sm mt-2 hidden">Please watch the full video to continue.</p>
+                    <p id="intro-video-error" class="error-message">Please watch the full video to continue.</p>
                     
-                    <!-- UPDATED FAILSAFE BUTTON -->
-                    <button id="manual-video-skip" class="mt-4 w-full flex items-center justify-center gap-2 bg-white border border-blue-500 text-blue-500 font-bold py-2 px-4 rounded-lg transition-colors hover:bg-blue-50">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
+                    <button id="manual-video-skip" class="manual-skip-btn">
+                        <span>✓</span>
                         I've watched the video, let me continue.
                     </button>
                 </div>
 
-                <!-- Step 2: Contract (Old Step 3) -->
+                <!-- Step 2: Contract -->
                 <div class="step" data-step="2">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 1: Sign Your Agreement</h2>
-                    <p class="text-slate-500 mb-6">Please review the Independent Contractor Agreement below. You can draw your signature in the box at the bottom.</p>
-                    <div id="contract-container" class="h-96 overflow-y-auto border border-slate-200 rounded-lg p-6 bg-slate-50 text-sm text-slate-700 space-y-4">
-                        <h3 class="text-lg font-bold text-center">INDEPENDENT CONTRACTOR AGREEMENT FOR CLEANING SERVICES</h3>
+                    <h2 class="step-title">Step 1: Sign Your Agreement</h2>
+                    <p class="step-description">Please review the Independent Contractor Agreement below. You can draw your signature in the box at the bottom.</p>
+                    <div id="contract-container" class="contract-container">
+                        <h3>INDEPENDENT CONTRACTOR AGREEMENT FOR CLEANING SERVICES</h3>
                         <p><strong>PARTIES:</strong></p>
-                        <ul class="list-disc list-inside">
+                        <ul>
                             <li>Company: Dustbusters Cleaning LLC</li>
-                            <li>Contractor: <span id="contractor-name" class="font-bold"></span></li>
+                            <li>Contractor: <span id="contractor-name" class="welcome-name"></span></li>
                         </ul>
                         <div>
-                            <h4 class="font-bold">1. INDEPENDENT CONTRACTOR RELATIONSHIP</h4>
+                            <h4>1. INDEPENDENT CONTRACTOR RELATIONSHIP</h4>
                             <p>1.1 Contractor agrees to provide cleaning services as an independent contractor, not as an employee. Contractor is responsible for their own taxes and benefits.</p>
                             <p>1.2 Contractor has the right to control the manner and means of performing services, subject to quality standards and client requirements.</p>
                         </div>
                         <div>
-                           <h4 class="font-bold">2. SCOPE OF SERVICES</h4>
+                           <h4>2. SCOPE OF SERVICES</h4>
                            <p>2.1 Contractor will provide residential/commercial cleaning services at locations assigned by Company.</p>
                            <p>2.2 Services must meet Company's quality standards and client specifications.</p>
                            <p>2.3 Contractor must use Company-approved cleaning supplies and equipment when provided, or use equivalent quality products when self-supplied.</p>
                        </div>
                        <div>
-                           <h4 class="font-bold">3. COMPENSATION AND PAYMENT</h4>
+                           <h4>3. COMPENSATION AND PAYMENT</h4>
                            <p>3.1 Contractor will be paid only upon successful completion of assigned cleaning jobs.</p>
-                           <p>3.2 Payment rates: <input type="text" id="pay-rate" class="font-bold bg-slate-200 p-1 rounded" readonly></p>
+                           <p>3.2 Payment rates: <span id="pay-rate" style="font-weight: 700;"></span></p>
                            <p>3.3 Payment terms: Every Friday.</p>
                            <p>3.4 No payment for cancelled jobs, no-shows by contractor, or incomplete work.</p>
                        </div>
                         <div>
-                            <h4 class="font-bold">4. LIABILITY AND COMPANY SUPPORT</h4>
+                            <h4>4. LIABILITY AND COMPANY SUPPORT</h4>
                             <p>4.1 COMPANY INSURANCE: Company maintains general liability insurance to protect our business operations and provide coverage for normal cleaning activities.</p>
                             <p>4.2 CONTRACTOR RESPONSIBILITY: Contractor is responsible for damages and losses caused by: Carelessness or failure to follow proper cleaning procedures, Intentional misconduct or negligence, Theft or misappropriation of client property, Unauthorized use of client property.</p>
                             <p>4.3 SMALL ACCIDENTS: For minor, unintentional accidents during normal cleaning: Contractor must immediately report to Company. Company will work with contractor and client to resolve the situation. Company may assist in addressing minor damages depending on circumstances.</p>
@@ -125,37 +488,37 @@
                             <p>4.5 IMMEDIATE REPORTING: Contractor must immediately report any damage, theft, or incidents to Company.</p>
                         </div>
                          <div>
-                            <h4 class="font-bold">5. CLIENT PROTECTION AND NON-SOLICITATION</h4>
+                            <h4>5. CLIENT PROTECTION AND NON-SOLICITATION</h4>
                             <p>5.1 ACTIVE CLIENT PROTECTION: While working with Company, contractor agrees not to: Directly or indirectly solicit Company clients for independent cleaning services, Accept cleaning work from Company clients outside of Company arrangements, Provide personal contact information or business cards to Company clients for cleaning services, Encourage clients to hire contractor directly or independently.</p>
                             <p>5.2 DURATION: This non-solicitation applies during the entire term of this agreement.</p>
                             <p>5.3 POST-TERMINATION: After termination of this agreement: Contractor may contact former Company clients after [60-90] days. Professional courtesy and reasonable waiting period expected. Company appreciates advance notice if contractor plans to work with former clients.</p>
                             <p>5.4 GEOGRAPHIC SCOPE: Applies to all clients within the North Carolina Triad area.</p>
                         </div>
                         <div>
-                            <h4 class="font-bold">6. CONFIDENTIALITY</h4>
+                            <h4>6. CONFIDENTIALITY</h4>
                             <p>6.1 Contractor will not disclose: Client information, preferences, or contact details, Company pricing, business methods, or operational procedures, Security codes, keys, or access information, Any confidential business information.</p>
                             <p>6.2 All client information remains Company property.</p>
                         </div>
                         <div>
-                            <h4 class="font-bold">7. PROFESSIONAL STANDARDS</h4>
+                            <h4>7. PROFESSIONAL STANDARDS</h4>
                             <p>7.1 PROFESSIONAL CONDUCT: Contractor must: Arrive punctually for scheduled appointments, Dress professionally and maintain clean appearance, Respect client property and privacy, Follow all safety protocols, Maintain professional communication with clients.</p>
                             <p>7.2 PROHIBITED ACTIONS: Contractor may not: Use client property for personal purposes, Bring unauthorized persons to job sites, Accept large gratuities without Company knowledge, Engage in unprofessional or inappropriate behavior.</p>
                         </div>
                         <div>
-                           <h4 class="font-bold">8. TERMINATION</h4>
+                           <h4>8. TERMINATION</h4>
                            <p>8.1 VOLUNTARY TERMINATION: Either party may terminate with [14] days written notice for any reason.</p>
                            <p>8.2 IMMEDIATE TERMINATION: Company may terminate immediately for: Theft or intentional damage to property, Serious unprofessional conduct or client complaints, Violation of client non-solicitation during active period, Criminal activity on job sites, Repeated failure to meet quality standards after warnings.</p>
                            <p>8.3 COMPANY SUPPORT: Company will work with contractors to address performance issues when possible before termination and provide fair notice except in cases of serious misconduct.</p>
                            <p>8.4 RETURN OF MATERIALS: Upon termination, contractor must return all Company property, keys, and access devices.</p>
                        </div>
                        <div>
-                           <h4 class="font-bold">9. EQUIPMENT AND QUALITY ASSURANCE</h4>
+                           <h4>9. EQUIPMENT AND QUALITY ASSURANCE</h4>
                            <p>9.1 EQUIPMENT RESPONSIBILITY: Contractor liable for lost, damaged, or stolen Company equipment due to carelessness. Must return all items in reasonable condition upon termination. Normal wear and tear expected and accepted.</p>
                            <p>9.2 QUALITY STANDARDS: Company reserves right to inspect work and request corrections. Repeated quality issues may result in additional training or termination. Client feedback will be shared constructively with contractors.</p>
                            <p>9.3 COMMUNICATION PROTOCOL: Major client requests or complaints should be directed to Company management. Contractor should maintain professional relationships with clients. Company will support contractors in client interactions.</p>
                        </div>
                        <div>
-                           <h4 class="font-bold">10. LEGAL PROVISIONS</h4>
+                           <h4>10. LEGAL PROVISIONS</h4>
                            <p>10.1 GOVERNING LAW: This agreement is governed by North Carolina law.</p>
                            <p>10.2 VENUE: Any disputes will be resolved in courts of [your county], North Carolina.</p>
                            <p>10.3 SEVERABILITY: If any provision is unenforceable, the remainder stays in effect.</p>
@@ -163,68 +526,64 @@
                            <p>10.5 ENTIRE AGREEMENT: This agreement supersedes all prior agreements and can only be modified in writing.</p>
                        </div>
                        <div>
-                           <h4 class="font-bold">PARTNERSHIP APPROACH</h4>
+                           <h4>PARTNERSHIP APPROACH</h4>
                            <p>Our Commitment to Contractors: Company provides liability coverage for normal cleaning operations. We support our contractors and work together to resolve issues. Fair treatment and professional respect in all interactions. Clear expectations that protect both parties.</p>
                            <p>Contractor Partnership: Professional service delivery that protects Company reputation. Open communication about challenges or concerns. Respect for client relationships during active working period. Reasonable transition period for client contact after agreement ends.</p>
                        </div>
-                        <p>By signing below, you acknowledge that you have read, understood, and agree to the terms of this Independent Contractor Agreement.</p>
+                        <p style="margin-top: 20px;"><strong>By signing below, you acknowledge that you have read, understood, and agree to the terms of this Independent Contractor Agreement.</strong></p>
                     </div>
-                    <div class="mt-6">
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Draw Your Signature Below:</label>
-                        <canvas id="signature-pad" class="w-full md:w-[500px]" width="500" height="250"></canvas>
-                        <button id="clear-signature" class="mt-2 text-sm text-blue-600 hover:underline">Clear Signature</button>
+                    <div class="signature-section">
+                        <label class="signature-label">Draw Your Signature Below:</label>
+                        <canvas id="signature-pad" width="500" height="250"></canvas>
+                        <button id="clear-signature" class="clear-signature-btn">Clear Signature</button>
                     </div>
-                     <p id="signature-error" class="text-red-500 text-sm mt-2 hidden">Please provide a signature to continue.</p>
+                    <p id="signature-error" class="error-message">Please provide a signature to continue.</p>
                 </div>
 
-                <!-- Step 3: Availability (Old Step 4) -->
+                <!-- Step 3: Availability -->
                 <div class="step" data-step="3">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 2: Share Your Availability</h2>
-                    <p class="text-slate-500 mb-6">Please fill out the form below to let us know the days and times you're available to work. Once you hit "Submit" on the form, you'll be able to continue.</p>
-                    <div class="w-full h-[700px] border border-slate-200 rounded-lg overflow-hidden">
-                       <iframe src="https://admin-dustbusters.github.io/availability-form/cleaner-availability-form.html" class="w-full h-full" frameborder="0"></iframe>
+                    <h2 class="step-title">Step 2: Share Your Availability</h2>
+                    <p class="step-description">Please fill out the form below to let us know the days and times you're available to work. Once you hit "Submit" on the form, you'll be able to continue.</p>
+                    <div class="iframe-container">
+                       <iframe src="https://admin-dustbusters.github.io/availability-form/cleaner-availability-form.html"></iframe>
                     </div>
-                     <p id="availability-error" class="text-red-500 text-sm mt-2 hidden">Please submit your availability to continue.</p>
+                    <p id="availability-error" class="error-message">Please submit your availability to continue.</p>
                 </div>
 
-                <!-- Step 4: Invoicing (Old Step 5) -->
+                <!-- Step 4: Invoicing -->
                 <div class="step" data-step="4">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 3: How Invoicing Works</h2>
-                    <p class="text-slate-500 mb-6">Submitting your weekly invoice is simple and automated. This short video explains how the system works.</p>
-                    <div class="aspect-w-16 aspect-h-9 border border-slate-200 rounded-lg overflow-hidden">
-                         <!-- UPDATED IRAME SRC -->
-                         <iframe src="https://www.loom.com/embed/1e2b3494c7f64534b4e33c3c9a3d8d1a" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+                    <h2 class="step-title">Step 3: How Invoicing Works</h2>
+                    <p class="step-description">Submitting your weekly invoice is simple and automated. This short video explains how the system works.</p>
+                    <div class="video-container">
+                         <iframe src="https://www.loom.com/embed/1e2b3494c7f64534b4e33c3c9a3d8d1a" allowfullscreen></iframe>
                     </div>
                 </div>
                 
-                <!-- Step 5: Zenbooker & QuickBooks (UPDATED FROM HOUSECALL PRO) -->
+                <!-- Step 5: Zenbooker & QuickBooks -->
                 <div class="step" data-step="5">
-                     <h2 class="text-2xl font-bold text-slate-800 mb-4">Step 4 & 5: Watch Your Inbox!</h2>
-                     <div class="space-y-6 text-slate-600">
-                         <div>
-                             <h3 class="font-semibold text-lg text-slate-700">Zenbooker Setup</h3>
-                             <p>You will receive an email from <strong>Zenbooker</strong> shortly. This is the simple app you'll use to manage your jobs, view client details, and track your schedule. Please follow the instructions in the email to download the app and log in.</p>
+                     <h2 class="step-title">Step 4 & 5: Watch Your Inbox!</h2>
+                     <div class="info-section">
+                         <div class="info-block">
+                             <h3 class="info-title">📱 Zenbooker Setup</h3>
+                             <p class="info-text">You will receive an email from <strong>Zenbooker</strong> shortly. This is the simple app you'll use to manage your jobs, view client details, and track your schedule. Please follow the instructions in the email to download the app and log in.</p>
                          </div>
-                         <div>
-                             <h3 class="font-semibold text-lg text-slate-700">QuickBooks Direct Deposit</h3>
-                             <p>To ensure you get paid on time, you'll also receive an email from <strong>QuickBooks</strong>. Please follow the instructions to add your bank details for direct deposit.</p>
+                         <div class="info-block">
+                             <h3 class="info-title">💰 QuickBooks Direct Deposit</h3>
+                             <p class="info-text">To ensure you get paid on time, you'll also receive an email from <strong>QuickBooks</strong>. Please follow the instructions to add your bank details for direct deposit.</p>
                          </div>
-                         <p class="font-medium text-blue-600">That's it for now! You can move to the final step.</p>
+                         <p class="info-text" style="font-weight: 600; color: #667eea; margin-top: 20px;">That's it for now! You can move to the final step.</p>
                      </div>
                 </div>
 
-                <!-- Step 6: All Done (Old Step 7) -->
+                <!-- Step 6: Completion -->
                 <div class="step" data-step="6">
-                    <div class="text-center">
-                        <!-- UPDATED CHECKMARK -->
-                        <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-blue-500">
-                            <svg class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
+                    <div class="completion-section">
+                        <div class="checkmark-circle">
+                            <div class="checkmark">✓</div>
                         </div>
-                        <h1 class="text-4xl font-bold text-blue-600 mt-4">You're All Set!</h1>
-                        <p class="text-xl text-slate-600 mt-2">Welcome to the DustBusters team!</p>
-                        <p class="text-slate-500 mt-4 max-w-xl mx-auto">Keep an eye on your email for the invites from Zenbooker and QuickBooks. If you have any questions, don't hesitate to reach out. We're excited to start working with you.</p>
+                        <h1 class="completion-title">You're All Set!</h1>
+                        <p class="completion-subtitle">Welcome to the DustBusters team!</p>
+                        <p class="completion-text">Keep an eye on your email for the invites from Zenbooker and QuickBooks. If you have any questions, don't hesitate to reach out. We're excited to start working with you.</p>
                     </div>
                 </div>
 
@@ -232,12 +591,12 @@
         </div>
 
         <!-- Navigation -->
-        <div class="px-8 py-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
-            <button id="prev-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition-colors invisible">
+        <div class="navigation">
+            <button id="prev-btn" class="nav-btn back-btn invisible">
                 Back
             </button>
-            <div id="validation-message" class="text-red-500 font-medium text-sm"></div>
-            <button id="next-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors transform hover:scale-105">
+            <div id="validation-message" class="validation-message"></div>
+            <button id="next-btn" class="nav-btn next-btn">
                 Next
             </button>
         </div>
@@ -251,22 +610,21 @@
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
             const progressPercent = document.getElementById('progress-percent');
-            const introVideoError = document.getElementById('intro-video-error'); // Defined high up
-            const manualVideoSkip = document.getElementById('manual-video-skip'); // NEW
+            const introVideoError = document.getElementById('intro-video-error');
+            const manualVideoSkip = document.getElementById('manual-video-skip');
             
             let currentStep = 1;
-            const totalSteps = 5; // UPDATED: Back to 5 steps
+            const totalSteps = 5;
             let cleanerData = {};
             let availabilitySubmitted = false;
-            let introVideoWatched = false; // NEW: Track intro video
+            let introVideoWatched = false;
             
-            // NEW: Centralized function to mark video as watched
             const videoWatched = () => {
                 if (!introVideoWatched) {
                     console.log('Intro video marked as watched.');
                     introVideoWatched = true;
-                    if (introVideoError) introVideoError.classList.add('hidden');
-                    if (manualVideoSkip) manualVideoSkip.classList.add('hidden'); // NEW: Hide button
+                    if (introVideoError) introVideoError.classList.remove('visible');
+                    if (manualVideoSkip) manualVideoSkip.style.display = 'none';
                 }
             };
             
@@ -276,7 +634,6 @@
             let drawing = false;
             let hasSigned = false;
 
-            // --- FINAL WEHOOK URL ---
             const webhookUrl = 'https://dustbusters-n8n.duckdns.org/webhook/onboarding-email';
 
             function initializeFromURL() {
@@ -286,7 +643,6 @@
                 cleanerData.rate = params.get('rate') || 'N/A';
                 cleanerData.email = params.get('email');
 
-                // Check if elements exist before setting text content
                 const cleanerNameEl = document.getElementById('cleaner-name');
                 if (cleanerNameEl) cleanerNameEl.textContent = cleanerData.name;
                 
@@ -294,7 +650,7 @@
                 if (contractorNameEl) contractorNameEl.textContent = cleanerData.fullName;
                 
                 const payRateEl = document.getElementById('pay-rate');
-                if (payRateEl) payRateEl.value = cleanerData.rate;
+                if (payRateEl) payRateEl.textContent = cleanerData.rate;
             }
 
             function updateUI() {
@@ -302,23 +658,21 @@
                 const activeStepElem = document.querySelector(`.step[data-step="${currentStep}"]`);
                 if(activeStepElem) activeStepElem.classList.add('active');
 
-                // Progress bar logic
                 const userFacingStep = Math.min(currentStep, totalSteps);
                 const progress = (userFacingStep / totalSteps) * 100;
                 progressBar.style.width = `${progress}%`;
                 progressText.textContent = `Step ${userFacingStep} of ${totalSteps}`;
                 progressPercent.textContent = `${Math.round(progress)}%`;
 
-                // Button visibility and text
                 prevBtn.classList.toggle('invisible', currentStep === 1);
                 
-                nextBtn.classList.remove('invisible'); // Ensure it's visible by default
+                nextBtn.classList.remove('invisible');
 
                 if (currentStep === 1) {
                     nextBtn.textContent = "Next";
-                } else if (currentStep === 2) { // Contract
+                } else if (currentStep === 2) {
                     nextBtn.textContent = "Agree & Continue";
-                } else if (currentStep >= totalSteps + 1) { // Now 6
+                } else if (currentStep >= totalSteps + 1) {
                     nextBtn.classList.add('invisible');
                 } else {
                     nextBtn.textContent = "Next";
@@ -326,41 +680,37 @@
             }
             
             function validateStep() {
-                // Step 1: Intro Video validation
                 if (currentStep === 1) {
                     if (!introVideoWatched) {
-                        if (introVideoError) introVideoError.classList.remove('hidden');
+                        if (introVideoError) introVideoError.classList.add('visible');
                         return false;
                     }
-                    if (introVideoError) introVideoError.classList.add('hidden');
+                    if (introVideoError) introVideoError.classList.remove('visible');
                 }
 
-                // Step 2: Contract signature validation (was 3)
                 if (currentStep === 2) {
                     const signatureError = document.getElementById('signature-error');
                     if (!hasSigned) {
-                        signatureError.classList.remove('hidden');
+                        signatureError.classList.add('visible');
                         return false;
                     }
-                    signatureError.classList.add('hidden');
+                    signatureError.classList.remove('visible');
                 }
                 
-                // Step 3: Availability form validation (was 4)
                 if (currentStep === 3) {
                     const availabilityError = document.getElementById('availability-error');
                     if (!availabilitySubmitted) {
-                        availabilityError.classList.remove('hidden');
+                        availabilityError.classList.add('visible');
                         return false;
                     }
-                    availabilityError.classList.add('hidden');
+                    availabilityError.classList.remove('visible');
                 }
                 return true;
             }
 
-            let contractSubmitted = false; // NEW: Track if contract has been submitted
+            let contractSubmitted = false;
 
             async function handleSubmitContract() {
-                // Only submit once, when moving from Step 2 to Step 3
                 if (currentStep === 2 && hasSigned && !contractSubmitted) {
                     nextBtn.disabled = true;
                     nextBtn.textContent = 'Submitting...';
@@ -377,177 +727,12 @@
                     try {
                         const response = await fetch(webhookUrl, {
                             method: 'POST',
-                            mode: 'no-cors', // ADDED: This bypasses CORS preflight errors
+                            mode: 'no-cors',
                             headers: { 
                                 'Content-Type': 'application/json' 
                             },
                             body: JSON.stringify(payload)
                         });
-                        
-                        // REMOVED: With 'no-cors', we can't check the response status,
-                        // so we must assume it was sent if no network error was caught.
-                        // if (!response.ok) {
-                        //     throw new Error(`Webhook failed with status: ${response.status}`);
-                        // }
 
                         console.log('Contract submission sent (no-cors mode).');
-                        contractSubmitted = true; // NEW: Mark as submitted
-                        return true;
-                    } catch (error) {
-                        console.error('Failed to submit contract:', error);
-                        // Do not use alert()
-                        const validationMsg = document.getElementById('validation-message') || document.getElementById('signature-error');
-                        if(validationMsg) validationMsg.textContent = 'Submission failed. Please try again.';
-                        return false;
-                    } finally {
-                        nextBtn.disabled = false;
-                        nextBtn.textContent = 'Next'; // Will be set correctly by updateUI on next step
-                    }
-                }
-                return true; // Pass if not on this step or already submitted
-            }
-
-            nextBtn.addEventListener('click', async () => {
-                if (!validateStep()) return;
-
-                if (currentStep === 2) { // Check for contract submission on new step 2
-                    const submissionSuccess = await handleSubmitContract();
-                    if (!submissionSuccess) return;
-                }
-
-                if (currentStep < steps.length) {
-                    currentStep++;
-                    updateUI();
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentStep > 1) {
-                    currentStep--;
-                    updateUI();
-                }
-            });
-            
-             // Listen for message from iframe
-            window.addEventListener('message', (event) => {
-                // IMPORTANT: Add origin check for security in a real application
-                // if (event.origin !== 'https://admin-dustbusters.github.io') return;
-
-                if (event.data === 'availabilitySubmitted') {
-                    console.log('Received availability submission confirmation.');
-                    availabilitySubmitted = true;
-                    const availabilityError = document.getElementById('availability-error');
-                    if (availabilityError) availabilityError.classList.add('hidden');
-                }
-            });
-
-            // NEW: Add click listener for the manual skip button
-            if (manualVideoSkip) {
-                manualVideoSkip.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent any default button behavior
-                    videoWatched();
-                });
-            }
-
-            // --- Signature Pad ---
-            function getMousePos(canvasDom, mouseEvent) {
-                const rect = canvasDom.getBoundingClientRect();
-                return {
-                    x: mouseEvent.clientX - rect.left,
-                    y: mouseEvent.clientY - rect.top
-                };
-            }
-            
-            function getTouchPos(canvasDom, touchEvent) {
-              const rect = canvasDom.getBoundingClientRect();
-              return {
-                x: touchEvent.touches[0].clientX - rect.left,
-                y: touchEvent.touches[0].clientY - rect.top
-              };
-            }
-
-            function startDrawing(e) {
-                e.preventDefault();
-                drawing = true;
-                hasSigned = true;
-                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            }
-
-            function draw(e) {
-                e.preventDefault();
-                if (!drawing) return;
-                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-            }
-
-            function stopDrawing() {
-                drawing = false;
-                ctx.beginPath();
-            }
-
-            if (canvas) {
-                canvas.addEventListener('mousedown', startDrawing);
-                canvas.addEventListener('mousemove', draw);
-                canvas.addEventListener('mouseup', stopDrawing);
-                canvas.addEventListener('mouseout', stopDrawing);
-                
-                canvas.addEventListener('touchstart', startDrawing);
-                canvas.addEventListener('touchmove', draw);
-                canvas.addEventListener('touchend', stopDrawing);
-
-                document.getElementById('clear-signature').addEventListener('click', () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    hasSigned = false;
-                });
-            }
-
-            // --- NEW: Loom Player SDK Setup ---
-            function setupLoom() {
-                const introVideoIframe = document.getElementById('intro-video');
-                if (!introVideoIframe) return;
-                
-                if (typeof LoomPlayer !== 'undefined') {
-                     LoomPlayer.at(introVideoIframe).then(player => {
-                        console.log('Loom Player attached');
-                        
-                        // NEW: Set playback speed to 1.5x
-                        player.setPlaybackSpeed(1.5).catch(e => console.warn('Could not set playback speed:', e));
-
-                        let duration = 0;
-                        player.getDuration()
-                            .then(d => duration = d || 0)
-                            .catch(e => console.warn('Could not get duration', e)); // Added catch
-
-                        player.on('ended', videoWatched);
-                        
-                        // Fallback in case 'ended' event doesn't fire
-                        player.on('playbackTimeChanged', (data) => {
-                             // UPDATED: Changed from -2 to -1.5 for a tighter check
-                             if (duration > 0 && data.seconds >= (duration - 1.5)) { // Watched until last 1.5 seconds
-                                videoWatched();
-                            }
-                        });
-                        
-                     }).catch(e => {
-                        // UPDATED FAILSAFE: If the player SDK fails to init, allow user to proceed.
-                        console.warn('Loom Player SDK failed to init. Enabling next button as a fallback.', e);
-                        videoWatched(); // Call the centralized function
-                     });
-                } else {
-                    // Poll for the SDK
-                    console.log('Waiting for Loom SDK...');
-                    setTimeout(setupLoom, 200);
-                }
-            }
-
-            // Initial setup
-            initializeFromURL();
-            updateUI();
-            setupLoom(); // Call the new Loom setup
-        });
-    </script>
-</body>
-</html>
+                        contractSubmitte
