@@ -5,59 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DustBusters - Onboarding Link Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .feedback-message {
-            transition: opacity 0.3s ease-in-out;
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #f7fafc;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #cbd5e0;
+            font-size: 14px;
+        }
+        
+        .form-container {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .feedback {
+            padding: 0 30px 30px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .feedback.hidden {
+            display: none;
+        }
+        
+        .feedback.success {
+            color: #48bb78;
+        }
+        
+        .feedback.error {
+            color: #f56565;
         }
     </style>
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧹 DustBusters Onboarding</h1>
+            <p>Enter cleaner details to send their onboarding link</p>
+        </div>
 
-    <div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        <header class="text-center p-8 bg-[#1A202C]">
-            <h1 class="text-3xl font-bold text-slate-200">DustBusters Onboarding</h1>
-            <p class="text-slate-400 mt-2">Enter cleaner details to send their onboarding link.</p>
-        </header>
+        <div class="form-container">
+            <form id="onboarding-form">
+                <div class="form-group">
+                    <label for="firstName">First Name (for welcome message)</label>
+                    <input type="text" id="firstName" placeholder="e.g., Michal" required>
+                </div>
 
-        <form id="onboarding-form" class="space-y-6 p-8">
-            <div>
-                <label for="firstName" class="block text-sm font-medium text-slate-700">First Name (for welcome message)</label>
-                <input type="text" id="firstName" name="firstName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., Michal" required>
-            </div>
+                <div class="form-group">
+                    <label for="lastName">Last Legal Name (for contract)</label>
+                    <input type="text" id="lastName" placeholder="e.g., Polonyi" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hourlyRate">Hourly Rate</label>
+                    <input type="text" id="hourlyRate" placeholder="e.g., 20 or $20/h" required>
+                </div>
 
-            <div>
-                <label for="lastName" class="block text-sm font-medium text-slate-700">Last Legal Name (for contract)</label>
-                <input type="text" id="lastName" name="lastName" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., Polonyi" required>
-            </div>
-            
-            <div>
-                <label for="hourlyRate" class="block text-sm font-medium text-slate-700">Hourly Rate</label>
-                <input type="text" id="hourlyRate" name="hourlyRate" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., 20 or $20/h" required>
-            </div>
+                <div class="form-group">
+                    <label for="email">Cleaner's Email Address</label>
+                    <input type="email" id="email" placeholder="e.g., michal.p@example.com" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Onboarding Email</button>
+            </form>
+        </div>
 
-            <div>
-                <label for="email" class="block text-sm font-medium text-slate-700">Cleaner's Email Address</label>
-                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="e.g., michal.p@example.com" required>
-            </div>
-            
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-105">
-                Send Onboarding Email
-            </button>
-        </form>
-
-        <div id="feedback" class="mt-0 p-8 pt-0 text-center font-medium hidden feedback-message">
-            <p></p>
+        <div id="feedback" class="feedback hidden">
+            <p id="feedback-text"></p>
         </div>
     </div>
 
     <script>
         const form = document.getElementById('onboarding-form');
         const feedbackDiv = document.getElementById('feedback');
-        const feedbackP = feedbackDiv.querySelector('p');
+        const feedbackText = document.getElementById('feedback-text');
         const submitButton = form.querySelector('button[type="submit"]');
 
         const onboardingBaseUrl = 'https://admin-dustbusters.github.io/Send-Onboarding-Email/index.html';
@@ -67,8 +184,7 @@
             e.preventDefault();
 
             submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+            submitButton.textContent = '⏳ Sending...';
             feedbackDiv.classList.add('hidden');
             
             const firstName = document.getElementById('firstName').value;
@@ -76,18 +192,16 @@
             let hourlyRateInput = document.getElementById('hourlyRate').value.trim();
             const email = document.getElementById('email').value;
             
-            // Smart Formatting Logic
             const fullName = `${firstName} ${lastName}`;
             if (!isNaN(hourlyRateInput) && hourlyRateInput !== '') {
                 hourlyRateInput = `$${hourlyRateInput}/h`;
             }
 
-            // Construct the final link with all necessary data
             const params = new URLSearchParams({
                 name: firstName,
                 fullName: fullName,
                 rate: hourlyRateInput,
-                email: email // Include email for the second workflow
+                email: email
             });
             const onboardingLink = `${onboardingBaseUrl}?${params.toString()}`;
 
@@ -104,25 +218,25 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) { throw new Error(`Webhook failed: ${response.status}`); }
+                if (!response.ok) { 
+                    throw new Error(`Webhook failed: ${response.status}`); 
+                }
 
-                feedbackP.textContent = `Onboarding email sent successfully to ${email}!`;
-                feedbackP.className = 'text-green-600';
+                feedbackText.textContent = `✅ Onboarding email sent successfully to ${email}!`;
+                feedbackDiv.className = 'feedback success';
                 feedbackDiv.classList.remove('hidden');
                 form.reset();
 
             } catch (error) {
                 console.error('Error sending email via webhook:', error);
-                feedbackP.textContent = 'Failed to send email. Please check console and try again.';
-                feedbackP.className = 'text-red-600';
+                feedbackText.textContent = '❌ Failed to send email. Please try again.';
+                feedbackDiv.className = 'feedback error';
                 feedbackDiv.classList.remove('hidden');
             } finally {
                 submitButton.disabled = false;
                 submitButton.textContent = 'Send Onboarding Email';
-                submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
             }
         });
     </script>
 </body>
 </html>
-
