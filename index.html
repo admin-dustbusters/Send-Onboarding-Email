@@ -735,4 +735,151 @@
                         });
 
                         console.log('Contract submission sent (no-cors mode).');
-                        contractSubmitte
+                        contractSubmitted = true;
+                        return true;
+                    } catch (error) {
+                        console.error('Failed to submit contract:', error);
+                        const validationMsg = document.getElementById('validation-message') || document.getElementById('signature-error');
+                        if(validationMsg) validationMsg.textContent = 'Submission failed. Please try again.';
+                        return false;
+                    } finally {
+                        nextBtn.disabled = false;
+                        nextBtn.textContent = 'Next';
+                    }
+                }
+                return true;
+            }
+
+            nextBtn.addEventListener('click', async () => {
+                if (!validateStep()) return;
+
+                if (currentStep === 2) {
+                    const submissionSuccess = await handleSubmitContract();
+                    if (!submissionSuccess) return;
+                }
+
+                if (currentStep < steps.length) {
+                    currentStep++;
+                    updateUI();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+            
+            window.addEventListener('message', (event) => {
+                if (event.data === 'availabilitySubmitted') {
+                    console.log('Received availability submission confirmation.');
+                    availabilitySubmitted = true;
+                    const availabilityError = document.getElementById('availability-error');
+                    if (availabilityError) availabilityError.classList.remove('visible');
+                }
+            });
+
+            if (manualVideoSkip) {
+                manualVideoSkip.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    videoWatched();
+                });
+            }
+
+            // Signature Pad
+            function getMousePos(canvasDom, mouseEvent) {
+                const rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: mouseEvent.clientX - rect.left,
+                    y: mouseEvent.clientY - rect.top
+                };
+            }
+            
+            function getTouchPos(canvasDom, touchEvent) {
+              const rect = canvasDom.getBoundingClientRect();
+              return {
+                x: touchEvent.touches[0].clientX - rect.left,
+                y: touchEvent.touches[0].clientY - rect.top
+              };
+            }
+
+            function startDrawing(e) {
+                e.preventDefault();
+                drawing = true;
+                hasSigned = true;
+                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(e) {
+                e.preventDefault();
+                if (!drawing) return;
+                const pos = e.type.includes('touch') ? getTouchPos(canvas, e) : getMousePos(canvas, e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function stopDrawing() {
+                drawing = false;
+                ctx.beginPath();
+            }
+
+            if (canvas) {
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+                
+                canvas.addEventListener('touchstart', startDrawing);
+                canvas.addEventListener('touchmove', draw);
+                canvas.addEventListener('touchend', stopDrawing);
+
+                document.getElementById('clear-signature').addEventListener('click', () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    hasSigned = false;
+                });
+            }
+
+            // Loom Player SDK Setup
+            function setupLoom() {
+                const introVideoIframe = document.getElementById('intro-video');
+                if (!introVideoIframe) return;
+                
+                if (typeof LoomPlayer !== 'undefined') {
+                     LoomPlayer.at(introVideoIframe).then(player => {
+                        console.log('Loom Player attached');
+                        
+                        player.setPlaybackSpeed(1.5).catch(e => console.warn('Could not set playback speed:', e));
+
+                        let duration = 0;
+                        player.getDuration()
+                            .then(d => duration = d || 0)
+                            .catch(e => console.warn('Could not get duration', e));
+
+                        player.on('ended', videoWatched);
+                        
+                        player.on('playbackTimeChanged', (data) => {
+                             if (duration > 0 && data.seconds >= (duration - 1.5)) {
+                                videoWatched();
+                            }
+                        });
+                        
+                     }).catch(e => {
+                        console.warn('Loom Player SDK failed to init. Enabling next button as a fallback.', e);
+                        videoWatched();
+                     });
+                } else {
+                    console.log('Waiting for Loom SDK...');
+                    setTimeout(setupLoom, 200);
+                }
+            }
+
+            initializeFromURL();
+            updateUI();
+            setupLoom();
+        });
+    </script>
+</body>
+</html>
